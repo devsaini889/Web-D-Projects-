@@ -66,15 +66,16 @@ function calcStrength() {
 async function copyContent() {
     try {
         await navigator.clipboard.writeText(passwordDisplay.value);
-        copyBtn.innerText = "copied";
+        copyBtn.querySelector("[data-copyMsg]").innerText = "Copied";
     } catch (e) {
-        copyBtn.innerText = "failed";
+        copyBtn.querySelector("[data-copyMsg]").innerText = "Failed";
     }   
     //to make copy btn visible
     copyBtn.classList.add("active");
     // remove copy btn after 2 seconds
     setTimeout(() => {
-        copyBtn.innerText = "copy";
+        copyBtn.querySelector("[data-copyMsg]").innerText = "";
+        copyBtn.classList.remove("active");
     }, 2000);
 }
 
