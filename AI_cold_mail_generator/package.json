@@ -1,0 +1,41 @@
+{
+  "name": "ai-cold-mail-generator",
+  "version": "1.0.0",
+  "description": "A web application that generates personalized cold emails using AI with user authentication and OTP verification.",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "setup": "npm install && npm install --prefix client && npm install --prefix server",
+    "server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "dev": "npx concurrently -n \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-cold-mail-generator.git"
+  },
+  "homepage": "https://github.com/yourusername/ai-cold-mail-generator#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-cold-mail-generator/issues"
+  },
+  "keywords": [
+    "ai",
+    "email",
+    "cold-mail",
+    "authentication",
+    "otp",
+    "nodejs",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.0.0"
+  }
+}

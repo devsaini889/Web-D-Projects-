@@ -1,91 +1,144 @@
 # Development Setup Guide
 
-This guide will help you set up the AI Cold Mail Generator project for development.
+Complete step-by-step guide to set up the AI Cold Mail Generator project for local development.
+
+## Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Quick Start](#quick-start)
+3. [Detailed Setup](#detailed-setup)
+4. [Environment Variables](#environment-variables)
+5. [Database Setup](#database-setup)
+6. [API Keys Setup](#api-keys-setup)
+7. [Running the Application](#running-the-application)
+8. [Troubleshooting](#troubleshooting)
+9. [Development Tips](#development-tips)
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+- **Node.js** v14+ - [Download](https://nodejs.org)
+- **npm** v6+ or **yarn** - Comes with Node.js
+- **Git** - [Download](https://git-scm.com)
+- **Git configured** with your GitHub credentials
+
+### Verify Installation
+
+Run these commands in your terminal:
+
+```bash
+node --version      # Should be v14 or higher
+npm --version       # Should be v6 or higher
+git --version       # Should show a version
+```
+
+### Create Required Accounts
+
+1. **MongoDB Atlas** - [Create Free Cluster](https://www.mongodb.com/cloud/atlas)
+2. **Gmail Account** - [Sign up](https://accounts.google.com/SignUp)
+3. **Groq API** - [Get Free API Key](https://console.groq.com)
 
 ## Quick Start
 
-### 1. Prerequisites Installation
+For experienced developers, here's the quick setup:
 
-Make sure you have the following installed:
-- **Node.js** v16 or higher - [Download](https://nodejs.org)
-- **npm** or **yarn** - Comes with Node.js
-- **Git** - [Download](https://git-scm.com)
-
-Verify installation:
 ```bash
-node --version
-npm --version
-git --version
+# Clone and navigate
+git clone https://github.com/yourusername/ai-cold-mail-generator.git
+cd ai-cold-mail-generator
+
+# Install all dependencies at once
+npm run setup
+
+# Configure environment
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+
+# Edit .env files with your credentials
+# Then start development
+npm run dev
 ```
 
-### 2. Clone & Initial Setup
+## Detailed Setup
+
+### Step 1: Clone the Repository
 
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd AI_cold_mail_generator
+git clone https://github.com/yourusername/ai-cold-mail-generator.git
+cd ai-cold-mail-generator
+```
+
+### Step 2: Install Dependencies
+
+There are three ways to install dependencies:
+
+**Option A: All at once (recommended)**
+```bash
+npm run setup
+```
+
+**Option B: Manually**
+```bash
+# Install root dependencies
+npm install
 
 # Install server dependencies
 cd server
 npm install
+cd ..
 
 # Install client dependencies
-cd ../client
+cd client
 npm install
-
 cd ..
 ```
 
-### 3. Environment Configuration
+**Option C: Individually**
+```bash
+npm install --prefix server
+npm install --prefix client
+```
 
-#### 3.1 Backend Setup
+### Step 3: Environment Configuration
+
+#### Backend Configuration
 
 Navigate to `server/` directory:
 
 ```bash
+cd server
 cp .env.example .env
 ```
 
-Edit `server/.env` and add your credentials:
+Edit `server/.env` with your values:
 
 ```env
-# Database
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/ai_cold_mail_db
+# MongoDB Connection String
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai_cold_mail_db
 
-# JWT
-JWT_SECRET=your-random-secret-key-at-least-32-characters-long
+# JWT Secret (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
+JWT_SECRET=your_random_32_character_string_here
 
-# Gmail Configuration
+# Gmail Configuration (for OTP emails)
 EMAIL_USERNAME=your-email@gmail.com
-EMAIL_PASSWORD=your-16-char-app-password
+EMAIL_PASSWORD=your_16_character_app_password
 
-# Groq API
-GROQ_API_KEY=your-groq-api-key
+# Groq API (for AI email generation)
+GROQ_API_KEY=your_groq_api_key_here
 
-# Server
+# Server Configuration
 PORT=3000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 ```
 
-**Getting Gmail App Password:**
-1. Go to [Google Account](https://myaccount.google.com/)
-2. Navigate to **Security** > **2-Step Verification** (enable if needed)
-3. Look for **App passwords** section
-4. Select "Mail" and "Windows Computer"
-5. Copy the 16-character password
-
-**Getting Groq API Key:**
-1. Visit [Groq Console](https://console.groq.com)
-2. Sign up/login to your account
-3. Navigate to API Keys section
-4. Create and copy your API key
-
-#### 3.2 Frontend Setup
+#### Frontend Configuration
 
 Navigate to `client/` directory:
 
 ```bash
+cd ../client
 cp .env.example .env
 ```
 
@@ -96,108 +149,396 @@ VITE_API_BASE_URL=http://localhost:3000/api
 VITE_NODE_ENV=development
 ```
 
-### 4. Database Setup
+## Environment Variables
 
-#### MongoDB Atlas Setup:
+### Server Variables Explained
 
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a new cluster (free tier is fine for development)
-3. Create a database user with read/write permissions
-4. Whitelist your IP address (or 0.0.0.0 for development)
-5. Click "Connect" and copy the connection string
-6. Replace `<username>`, `<password>`, and `<database_name>` in your `.env`
+| Variable | Purpose | Format | Example |
+|----------|---------|--------|---------|
+| `MONGODB_URI` | Database connection | MongoDB Atlas URI | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
+| `JWT_SECRET` | Token signing key | Random 32+ characters | Use `crypto.randomBytes(32).toString('hex')` |
+| `EMAIL_USERNAME` | Sender email | Gmail address | `your-email@gmail.com` |
+| `EMAIL_PASSWORD` | Gmail app password | 16-char app password | From Gmail app passwords |
+| `GROQ_API_KEY` | Groq API key | API key string | From Groq console |
+| `PORT` | Server port | Number | `3000` |
+| `NODE_ENV` | Environment | `development` or `production` | `development` |
+| `CLIENT_URL` | Frontend URL | Full URL | `http://localhost:5173` |
 
-Connection string format:
+### Client Variables Explained
+
+| Variable | Purpose | Format | Example |
+|----------|---------|--------|---------|
+| `VITE_API_BASE_URL` | Backend API URL | Full API URL | `http://localhost:3000/api` |
+| `VITE_NODE_ENV` | Environment | `development` or `production` | `development` |
+
+## Database Setup
+
+### MongoDB Atlas Setup (Recommended for Development)
+
+1. **Create Account**
+   - Visit [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+   - Sign up with email
+   - Verify your email address
+
+2. **Create Cluster**
+   - Click "Create a Deployment"
+   - Choose "Shared" (Free tier)
+   - Select your region
+   - Click "Create Deployment"
+   - Wait for cluster to provision (3-5 minutes)
+
+3. **Create Database User**
+   - Go to "Database Access"
+   - Click "Add New Database User"
+   - Create username and strong password
+   - Grant "Read and write to any database"
+   - Click "Add User"
+
+4. **Whitelist IP Address**
+   - Go to "Network Access"
+   - Click "Add IP Address"
+   - For development: Click "Allow Access from Anywhere" (0.0.0.0/0)
+   - For production: Add only your server IP
+   - Click "Confirm"
+
+5. **Get Connection String**
+   - Go back to "Databases"
+   - Click "Connect" button
+   - Choose "Drivers"
+   - Copy the connection string
+   - Replace `<username>`, `<password>`, and `<database>`
+   - Paste in `server/.env` as `MONGODB_URI`
+
+Example connection string:
 ```
-mongodb+srv://username:password@cluster-name.mongodb.net/database_name
+mongodb+srv://myuser:mypassword@cluster0.mongodb.net/ai_cold_mail_db
 ```
 
-### 5. Running the Application
+## API Keys Setup
 
-You'll need **two terminal windows** or use a terminal multiplexer.
+### Gmail App Password Setup
 
-**Terminal 1 - Backend Server:**
+1. **Enable 2-Step Verification**
+   - Go to [Google Account](https://myaccount.google.com/)
+   - Click "Security" in left menu
+   - Find "2-Step Verification"
+   - Click "Get Started"
+   - Follow the steps to enable it
+
+2. **Generate App Password**
+   - Go back to [Google Account Security](https://myaccount.google.com/security)
+   - Find "App passwords"
+   - Select "Mail" and "Windows Computer"
+   - Click "Generate"
+   - Copy the 16-character password
+   - Add to `server/.env` as `EMAIL_PASSWORD`
+
+### Groq API Key Setup
+
+1. **Create Groq Account**
+   - Visit [Groq Console](https://console.groq.com)
+   - Sign up with email or GitHub
+   - Verify email
+
+2. **Get API Key**
+   - Go to "API Keys" section
+   - Click "Create New API Key"
+   - Name it something like "Development"
+   - Copy the key
+   - Add to `server/.env` as `GROQ_API_KEY`
+
+3. **Test the Key**
+   - Keep your terminal open
+   - Run the app and try generating an email
+   - If it fails, check the key is valid
+
+## Running the Application
+
+### Option 1: Concurrently (Recommended)
+
+From the root directory:
+
+```bash
+npm run dev
+```
+
+This starts both backend and frontend in one command.
+
+**Expected Output:**
+```
+[SERVER] Connected to MongoDB
+[SERVER] Server is running on port 3000
+[CLIENT] ➜  Local:   http://localhost:5173/
+```
+
+### Option 2: Separate Terminals
+
+**Terminal 1 - Backend:**
 ```bash
 cd server
 npm run dev
 ```
 
-Expected output:
-```
-Connected to MongoDB
-Server is running on port 3000
-```
-
-**Terminal 2 - Frontend Development:**
+**Terminal 2 - Frontend:**
 ```bash
 cd client
 npm run dev
 ```
 
-Expected output:
-```
-VITE v8.0.10  ready in 123 ms
+### Access the Application
 
-➜  Local:   http://localhost:5173/
-➜  press h to show help
-```
-
-Visit `http://localhost:5173` in your browser.
-
-## Troubleshooting
-
-### MongoDB Connection Error
-- **Error:** `MongooseError: connect ECONNREFUSED`
-- **Solution:**
-  - Verify MongoDB URI in `.env`
-  - Check if IP is whitelisted in MongoDB Atlas
-  - Ensure internet connection is active
-
-### Email Not Sending
-- **Error:** `Invalid login: 535-5.7.8 Username and Password not accepted`
-- **Solution:**
-  - Verify 2-Step Verification is enabled on Gmail
-  - Use App Password (not regular Gmail password)
-  - Confirm `EMAIL_USERNAME` and `EMAIL_PASSWORD` are correct
-
-### CORS Error
-- **Error:** `Access to XMLHttpRequest blocked by CORS policy`
-- **Solution:**
-  - Ensure backend is running on port 3000
-  - Verify `CLIENT_URL` in server `.env` matches frontend URL
-  - Frontend should be on `http://localhost:5173`
-
-### Port Already in Use
-- **Error:** `Error: listen EADDRINUSE: address already in use :::3000`
-- **Solution:**
-  ```bash
-  # On Windows
-  netstat -ano | findstr :3000
-  taskkill /PID <PID> /F
-  
-  # On Mac/Linux
-  lsof -i :3000
-  kill -9 <PID>
-  ```
-
-### Groq API Error
-- **Error:** `401 Unauthorized` or `Invalid API key`
-- **Solution:**
-  - Verify `GROQ_API_KEY` is set correctly in `.env`
-  - Check key is valid at [Groq Console](https://console.groq.com)
-  - Ensure key hasn't been regenerated/revoked
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000
+- **API Docs**: Check your routes in `server/routes/`
 
 ## Project Structure
 
 ```
-AI_cold_mail_generator/
-├── server/                 # Backend (Express + MongoDB)
-│   ├── config/            # Database configuration
-│   ├── controllers/        # Route controllers
-│   ├── middlewares/        # Custom middleware
-│   ├── models/            # MongoDB schemas
-│   ├── routes/            # API routes
-│   ├── utils/             # Helper utilities
+ai-cold-mail-generator/
+├── client/                          # React Frontend
+│   ├── public/                      # Static assets
+│   ├── src/
+│   │   ├── components/              # Reusable components
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Sidebar.jsx
+│   │   ├── pages/                   # Page components
+│   │   │   ├── Dashboard.jsx        # Main app page
+│   │   │   ├── LandingPage.jsx      # Home page
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   └── VerifyOtp.jsx
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx      # Auth state management
+│   │   ├── utils/
+│   │   │   └── api.js               # API calls
+│   │   ├── App.jsx                  # Main app component
+│   │   ├── main.jsx                 # React entry point
+│   │   └── index.css                # Global styles
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js               # Vite configuration
+│
+├── server/                          # Express Backend
+│   ├── config/
+│   │   └── db.js                    # Database connection
+│   ├── controllers/
+│   │   ├── authController.js        # Auth logic
+│   │   └── aiController.js          # AI email logic
+│   ├── middlewares/
+│   │   └── authmiddleware.js        # JWT verification
+│   ├── models/
+│   │   ├── User.js                  # User schema
+│   │   └── emailHistory.js          # Email history schema
+│   ├── routes/
+│   │   ├── authRoutes.js            # Auth endpoints
+│   │   └── aiRoutes.js              # AI endpoints
+│   ├── utils/
+│   │   └── emailService.js          # Email sending utility
+│   ├── .env.example
+│   ├── server.js                    # Server entry point
+│   └── package.json
+│
+├── .gitignore                       # Git ignore rules
+├── package.json                     # Root dependencies
+├── README.md                        # Main documentation
+├── SETUP.md                         # This file
+├── CONTRIBUTING.md                  # Contributing guidelines
+├── DEPLOYMENT_CHECKLIST.md          # Pre-deployment checks
+├── TROUBLESHOOTING.md               # Common issues
+├── GITHUB_READY_SUMMARY.md          # GitHub prep summary
+└── LICENSE                          # ISC License
+```
+
+## Troubleshooting
+
+### MongoDB Connection Error
+
+**Symptoms:**
+```
+Error: connect ECONNREFUSED 127.0.0.1:27017
+MongooseError: connect ECONNREFUSED
+```
+
+**Solutions:**
+1. Verify `MONGODB_URI` is correct in `server/.env`
+2. Check if IP is whitelisted in MongoDB Atlas
+3. Ensure internet connection is active
+4. Try reconnecting to MongoDB Atlas cluster
+5. Check MongoDB Atlas cluster status
+
+### Email Not Sending
+
+**Symptoms:**
+```
+Error: Invalid login: 535-5.7.8 Username and Password not accepted
+```
+
+**Solutions:**
+1. Verify Gmail 2-Step Verification is enabled
+2. Use App Password (NOT regular Gmail password)
+3. Confirm `EMAIL_USERNAME` and `EMAIL_PASSWORD` are correct
+4. Regenerate App Password if necessary
+5. Check Gmail account is not locked
+
+### CORS Error
+
+**Symptoms:**
+```
+Access to XMLHttpRequest blocked by CORS policy
+```
+
+**Solutions:**
+1. Ensure backend is running on port 3000
+2. Verify `CLIENT_URL` matches frontend URL exactly
+3. Check `server/.env` has correct `CLIENT_URL`
+4. Restart backend after changing `CLIENT_URL`
+
+### Port Already in Use
+
+**Symptoms:**
+```
+Error: listen EADDRINUSE: address already in use :::3000
+```
+
+**Solutions:**
+
+**Windows:**
+```bash
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+```
+
+**Mac/Linux:**
+```bash
+lsof -i :3000
+kill -9 <PID>
+```
+
+Or change `PORT` in `server/.env` to another port (e.g., 3001)
+
+### Groq API Error
+
+**Symptoms:**
+```
+Error: 401 Unauthorized
+Invalid API key
+Rate limit exceeded
+```
+
+**Solutions:**
+1. Verify `GROQ_API_KEY` is set correctly
+2. Check key at [Groq Console](https://console.groq.com)
+3. Ensure key hasn't been revoked
+4. Check API usage limits
+5. Generate new key if necessary
+
+### Module Not Found
+
+**Symptoms:**
+```
+Error: Cannot find module 'express'
+```
+
+**Solutions:**
+1. Run `npm install` in the correct directory
+2. Delete `node_modules` and reinstall: `rm -rf node_modules && npm install`
+3. Clear npm cache: `npm cache clean --force`
+4. Try `npm ci` instead of `npm install`
+
+## Development Tips
+
+### Hot Reload
+
+- **Frontend**: Vite provides hot reload by default
+- **Backend**: Nodemon automatically restarts on file changes
+- Changes appear instantly in browser (no refresh needed)
+
+### Debugging
+
+**Frontend (Browser DevTools):**
+1. Open browser → F12 → Console tab
+2. Check for errors and API calls
+3. Use React DevTools extension
+
+**Backend (Console Logs):**
+1. Check terminal output for error messages
+2. Add `console.log()` for debugging
+3. Use `console.error()` for errors
+
+### Testing API Endpoints
+
+Use **REST Client** extension or **Postman**:
+
+1. Install REST Client extension in VS Code
+2. Create `test.http` file
+3. Write API requests:
+
+```http
+@host = http://localhost:3000
+@token = your_jwt_token_here
+
+### Register
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "SecurePass123!"
+}
+
+### Login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+### Code Style
+
+- **Frontend**: ESLint configured in project
+- **Backend**: Follow Express best practices
+- Use consistent indentation (2 spaces)
+- Add comments for complex logic
+
+### Useful Commands
+
+```bash
+# Root directory
+npm run setup        # Install all dependencies
+npm run dev          # Start both frontend and backend
+npm run server       # Start only backend
+npm run client       # Start only frontend
+
+# Server directory
+npm run dev          # Start with hot reload (nodemon)
+npm start            # Start in production mode
+
+# Client directory
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
+
+## Next Steps
+
+1. ✅ Complete this setup
+2. 📖 Read [CONTRIBUTING.md](CONTRIBUTING.md)
+3. 🔍 Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md) if issues arise
+4. 📋 Review [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) before pushing to GitHub
+5. 🚀 Start developing!
+
+## Need Help?
+
+- Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues
+- Review [GitHub Issues](https://github.com/yourusername/ai-cold-mail-generator/issues)
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
+- Contact: [your-email@example.com](mailto:your-email@example.com)
 │   ├── server.js          # Entry point
 │   ├── package.json
 │   └── .env.example

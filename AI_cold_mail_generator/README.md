@@ -1,102 +1,297 @@
 # AI Cold Mail Generator
 
-A web application that generates personalized cold emails using AI and includes user authentication with OTP verification.
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
+
+A web application that generates personalized cold emails using AI (Groq Llama model) with user authentication and OTP email verification.
+
+## ✨ Features
+
+- 🔐 **User Authentication** - Secure registration and login with JWT
+- 📧 **OTP Email Verification** - 6-digit OTP sent to email for verification
+- 🤖 **AI Email Generation** - Uses Groq's Llama model to generate personalized emails
+- 💾 **Email History** - Save and manage generated emails
+- 🎨 **Modern UI** - Built with React and TailwindCSS
+- 🔒 **Input Validation** - Comprehensive client and server-side validation
+- 🌐 **CORS Enabled** - Secure cross-origin communication
 
 ## 📋 Project Structure
 
 ```
-├── client/              # Frontend application
-├── server/              # Backend API
-│   ├── config/          # Database and configuration
-│   ├── controllers/      # Request handlers (auth, AI)
-│   ├── middlewares/      # Custom middleware
-│   ├── models/           # MongoDB schemas (User)
-│   ├── routes/           # API routes
-│   ├── utils/            # Utility functions (email service)
-│   ├── server.js         # Express server entry point
-│   └── package.json      # Node.js dependencies
-└── README.md
+├── client/                          # Frontend (React + Vite)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/              # React components
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Sidebar.jsx
+│   │   ├── pages/                   # Page components
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── LandingPage.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   └── VerifyOtp.jsx
+│   │   ├── context/                 # React Context
+│   │   │   └── AuthContext.jsx
+│   │   ├── utils/                   # Utilities
+│   │   │   └── api.js
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js
+│
+├── server/                          # Backend (Node.js + Express)
+│   ├── config/                      # Configuration
+│   │   └── db.js
+│   ├── controllers/                 # Request handlers
+│   │   ├── authController.js
+│   │   └── aiController.js
+│   ├── middlewares/                 # Custom middleware
+│   │   └── authmiddleware.js
+│   ├── models/                      # MongoDB schemas
+│   │   ├── User.js
+│   │   └── emailHistory.js
+│   ├── routes/                      # API routes
+│   │   ├── authRoutes.js
+│   │   └── aiRoutes.js
+│   ├── utils/                       # Utilities
+│   │   └── emailService.js
+│   ├── .env.example
+│   ├── server.js
+│   └── package.json
+│
+├── .gitignore
+├── package.json
+├── README.md
+├── SETUP.md
+├── CONTRIBUTING.md
+├── DEPLOYMENT_CHECKLIST.md
+├── TROUBLESHOOTING.md
+├── GITHUB_READY_SUMMARY.md
+└── LICENSE
 ```
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
-- MongoDB Atlas account
-- Gmail account (for email verification)
-- Groq API key (for AI email generation)
+- **Node.js** v14+ - [Download](https://nodejs.org)
+- **npm** or **yarn**
+- **MongoDB Atlas** account - [Create free cluster](https://www.mongodb.com/cloud/atlas)
+- **Gmail account** with app password
+- **Groq API key** - [Get free key](https://console.groq.com)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd AI_cold_mail_generator
+   git clone https://github.com/yourusername/ai-cold-mail-generator.git
+   cd ai-cold-mail-generator
    ```
 
-2. **Setup Backend**
+2. **Install all dependencies**
+   ```bash
+   npm run setup
+   ```
+
+3. **Configure environment variables**
+
+   **Backend (`server/.env`):**
    ```bash
    cd server
-   npm install
    cp .env.example .env
+   # Edit .env with your credentials
    ```
-   
-   Update `server/.env` with your credentials:
-   - `MONGO_URI`: MongoDB Atlas connection string
-   - `JWT_SECRET`: A secure random string for JWT signing
-   - `EMAIL_USERNAME`: Your Gmail address
-   - `EMAIL_PASSWORD`: Gmail app password
-   - `GROQ_API_KEY`: Your Groq API key (for Llama model access)
-   - `PORT`: Server port (default: 3000)
-   - `NODE_ENV`: Environment (development/production)
-   - `CLIENT_URL`: Frontend URL (http://localhost:5173 for development)
 
-3. **Setup Frontend**
+   **Frontend (`client/.env`):**
    ```bash
    cd ../client
-   npm install
    cp .env.example .env
+   # Edit .env with your API URL
    ```
-   
-   Update `client/.env`:
-   - `VITE_API_BASE_URL`: Backend API URL (http://localhost:3000/api for development)
 
-4. **Gmail Setup for Email Verification**
-   
-   To enable OTP email verification:
-   
-   1. Go to [Google Account Security](https://myaccount.google.com/security)
-   2. Enable 2-Step Verification (if not already enabled)
-   3. Generate an App Password:
-      - Go to "App passwords" section
-      - Select "Mail" and "Windows Computer"
-      - Copy the 16-character password
-   4. Add the app password to your `server/.env` file:
-      ```
-      EMAIL_PASSWORD=xxxx xxxx xxxx xxxx
-      ```
+4. **Start the application**
 
-5. **Groq API Setup**
-   
-   To enable AI email generation:
-   
-   1. Go to [Groq Console](https://console.groq.com)
-   2. Create an API key
-   3. Add it to your `server/.env`:
-      ```
-      GROQ_API_KEY=your_groq_api_key_here
-      ```
+   **Option 1 - Run both concurrently (from root):**
+   ```bash
+   npm run dev
+   ```
 
-6. **Start the Application**
-   
-   **Terminal 1 - Backend:**
+   **Option 2 - Run separately:**
+
+   Terminal 1 (Backend):
    ```bash
    cd server
-   npm start      # Production mode
-   npm run dev    # Development mode with auto-reload
+   npm run dev
    ```
+
+   Terminal 2 (Frontend):
+   ```bash
+   cd client
+   npm run dev
+   ```
+
+5. **Access the application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3000/api
+
+## 📚 Detailed Setup Guides
+
+- [Complete Setup Guide](SETUP.md) - Step-by-step installation and configuration
+- [Contributing Guidelines](CONTRIBUTING.md) - How to contribute to the project
+- [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) - Pre-deployment checks
+- [Troubleshooting Guide](TROUBLESHOOTING.md) - Common issues and solutions
+
+## 🔑 Environment Variables
+
+### Server (`server/.env`)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `MONGODB_URI` | MongoDB Atlas connection string | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
+| `JWT_SECRET` | Secret key for JWT tokens | Random 32-character string |
+| `GROQ_API_KEY` | Groq API key for AI email generation | Get from [Groq Console](https://console.groq.com) |
+| `EMAIL_USERNAME` | Gmail address for sending OTPs | `your-email@gmail.com` |
+| `EMAIL_PASSWORD` | Gmail app password (not regular password) | 16-character app password |
+| `PORT` | Server port | `3000` |
+| `NODE_ENV` | Environment mode | `development` or `production` |
+| `CLIENT_URL` | Frontend URL for CORS | `http://localhost:5173` |
+
+### Client (`client/.env`)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | Backend API base URL | `http://localhost:3000/api` |
+| `VITE_NODE_ENV` | Environment mode | `development` or `production` |
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **React** 19.2.5 - UI library
+- **Vite** 8.0.10 - Build tool
+- **TailwindCSS** 4.2.4 - CSS framework
+- **React Router** 7.15.0 - Routing
+- **Axios** 1.16.0 - HTTP client
+- **React Hot Toast** 2.6.0 - Notifications
+
+### Backend
+- **Node.js** - Runtime
+- **Express** 5.2.1 - Web framework
+- **MongoDB** + **Mongoose** 9.6.1 - Database
+- **JWT** 9.0.3 - Authentication
+- **Bcrypt** 6.0.0 - Password hashing
+- **Nodemailer** 8.0.7 - Email service
+- **Groq API** - AI email generation
+
+## 📖 API Documentation
+
+### Authentication Endpoints
+
+#### Register User
+```bash
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+#### Login
+```bash
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+#### Verify OTP
+```bash
+POST /api/auth/verify-otp
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "otp": "123456"
+}
+```
+
+### AI Email Generation
+
+#### Generate Email
+```bash
+POST /api/ai/generate-email
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "prompt": "Generate a cold email for a software developer..."
+}
+```
+
+#### Get Email History
+```bash
+GET /api/ai/email-history
+Authorization: Bearer <token>
+```
+
+## ✅ Validation Rules
+
+### Registration
+- **Username**: 3-30 characters, alphanumeric with underscores/hyphens
+- **Email**: Valid email format
+- **Password**: Min 8 characters, must include uppercase, lowercase, number, special character
+
+### Email Generation
+- **Prompt**: 10-2000 characters
+
+### OTP
+- **Format**: 6 digits
+- **Expiration**: 10 minutes
+
+## 🔒 Security Features
+
+- ✅ JWT-based authentication
+- ✅ Password hashing with Bcrypt
+- ✅ Email verification with OTP
+- ✅ CORS protection
+- ✅ Input validation (client & server)
+- ✅ Environment variable protection
+- ✅ Error handling without exposing sensitive data
+
+## 📝 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## 🐛 Issues & Support
+
+Found a bug? Have a suggestion? [Open an issue](https://github.com/yourusername/ai-cold-mail-generator/issues)
+
+For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+
+## 👨‍💻 Author
+
+Created with ❤️ by Your Name
+
+## 📞 Contact
+
+- Email: your.email@example.com
+- GitHub: [@yourusername](https://github.com/yourusername)
+
+---
+
+**⭐ If you found this helpful, please give it a star!**
    
    **Terminal 2 - Frontend:**
    ```bash

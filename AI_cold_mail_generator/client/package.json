@@ -1,14 +1,28 @@
 {
-  "name": "ai-cold-mail-generator",
+  "name": "ai-cold-mail-generator-client",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Frontend for AI Cold Mail Generator - React + Vite + TailwindCSS",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "email",
+    "tailwindcss",
+    "authentication"
+  ],
+  "author": "Your Name <your.email@example.com>",
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.2.4",
