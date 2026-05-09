@@ -1,13 +1,13 @@
-const User = require('../models/User');
-const sendEmail = require('../utils/emailService');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import sendEmail from '../utils/emailService.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const generateToken = (id) => {
   return jwt.sign({ userId: id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 }
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     console.log('Register called with body:', req.body);
     const { username, email, password } = req.body;
@@ -97,7 +97,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -130,7 +130,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.verifyOTP = async (req, res) => {
+export const verifyOTP = async (req, res) => {
   try {
     const { userId, email, otp } = req.body; // Accept either userId or email
 

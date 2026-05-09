@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const emailHistorySchema = new mongoose.Schema({    
     user:{
@@ -30,6 +30,4 @@ const emailHistorySchema = new mongoose.Schema({
 
 const EmailHistory = mongoose.model('EmailHistory', emailHistorySchema);
 
-module.exports = EmailHistory;
-
-  
+export default EmailHistory;

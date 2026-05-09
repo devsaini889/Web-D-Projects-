@@ -1,7 +1,7 @@
-const axios = require('axios');
-const EmailHistory = require('../models/emailHistory');
+import axios from 'axios';
+import EmailHistory from '../models/emailHistory.js';
 
-const generateEmail = async (req, res) => {
+export const generateEmail = async (req, res) => {
     const { prompt } = req.body;
 
     if (!prompt) {
@@ -92,7 +92,7 @@ Return ONLY valid JSON in this exact format:
 };
 
 // Get Email History
-const getEmailHistory = async (req, res) => {
+export const getEmailHistory = async (req, res) => {
     try {
         const history = await EmailHistory.find({ user: req.user._id })
             .sort({ createdAt: -1 })
@@ -106,10 +106,4 @@ const getEmailHistory = async (req, res) => {
             error: error.message 
         });
     }
-};
-
-// Export both functions
-module.exports = {
-    generateEmail,
-    getEmailHistory
 };

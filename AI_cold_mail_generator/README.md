@@ -143,6 +143,27 @@ A web application that generates personalized cold emails using AI (Groq Llama m
 - [Contributing Guidelines](CONTRIBUTING.md) - How to contribute to the project
 - [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) - Pre-deployment checks
 - [Troubleshooting Guide](TROUBLESHOOTING.md) - Common issues and solutions
+- [Render Deployment Guide](RENDER_DEPLOYMENT.md) - Deploy on Render (free hosting)
+- [Render Setup Summary](RENDER_SETUP_COMPLETE.md) - What was configured for Render
+
+## 🌐 Deployment
+
+### Quick Deploy on Render
+
+Deploy your app for free on [Render](https://render.com):
+
+1. Push code to GitHub
+2. Connect repository to Render
+3. Set environment variables
+4. Deploy both frontend and backend
+
+See [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) for detailed instructions.
+
+**Render Free Plan:**
+- ✅ Free tier available for both frontend and backend
+- ✅ MongoDB Atlas free cluster compatible
+- ⚠️ Apps spin down after 15 min of inactivity
+- 💡 Upgrade to Pro ($12/month) for production use
 
 ## 🔑 Environment Variables
 

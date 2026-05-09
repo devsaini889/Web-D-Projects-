@@ -1,11 +1,12 @@
 //Env variables - LOAD FIRST
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const express = require('express')
-const cors = require('cors');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes')
-const aiRoutes = require('./routes/aiRoutes')
+import express from 'express';
+import cors from 'cors';
+import { connectDB } from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 
 const PORT = process.env.PORT || 3000;
 
@@ -39,3 +40,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default app;

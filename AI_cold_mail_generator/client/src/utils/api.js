@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     // Prioritizes environment variable, defaults to localhost:3000
-    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000/api'
+    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
 });
 
 // Interceptor to attach JWT token to every request automatically

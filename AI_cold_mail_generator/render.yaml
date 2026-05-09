@@ -1,0 +1,36 @@
+services:
+  # Backend API Service
+  - type: web
+    name: ai-cold-mail-api
+    runtime: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        scope: shared
+      - key: JWT_SECRET
+        scope: shared
+      - key: GROQ_API_KEY
+        scope: shared
+      - key: RESEND_API_KEY
+        scope: shared
+      - key: EMAIL_FROM
+        scope: shared
+      - key: CLIENT_URL
+        value: https://ai-cold-mail-client.onrender.com
+
+  # Frontend Service
+  - type: web
+    name: ai-cold-mail-client
+    runtime: node
+    plan: free
+    buildCommand: cd client && npm install && npm run build
+    startCommand: cd client && npm run preview
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://ai-cold-mail-api.onrender.com/api

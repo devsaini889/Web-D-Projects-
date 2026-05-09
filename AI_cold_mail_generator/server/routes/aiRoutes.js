@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import { generateEmail, getEmailHistory } from '../controllers/aiController.js';
+import protect from '../middlewares/authmiddleware.js';
 
-const { generateEmail, getEmailHistory } = require('../controllers/aiController');
-const protect = require('../middlewares/authmiddleware');
+const router = express.Router();
 
 router.post('/generate', protect, generateEmail);
 router.get('/history', protect, getEmailHistory);
 
-module.exports = router;
+export default router;
