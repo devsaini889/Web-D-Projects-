@@ -1,19 +1,21 @@
 import { Resend } from 'resend';
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (options) => {
+    // Initializing inside the function ensures the API Key is available in process.env
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     try {
-        const response = await resend.emails.send({
+        const { data, error } = await resend.emails.send({
             from: `MailGen AI <${process.env.EMAIL_FROM}>`,
             to: options.to,
             subject: options.subject,
-            text: options.text || "Your OTP is " + options.otp,
-            html: options.html
+            html: options.html,
         });
 
-        return response;
+        if (error) throw error;
+        return data;
     } catch (error) {
-        console.error("Resend execution error:", error);
+        console.error("Resend Error:", error);
         throw error;
     }
 };
