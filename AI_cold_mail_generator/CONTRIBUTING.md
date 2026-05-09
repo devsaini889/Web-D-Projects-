@@ -393,7 +393,7 @@ npm test -- --coverage
 
 ### Before Reporting
 
-- Check [GitHub Issues](https://github.com/yourusername/ai-cold-mail-generator/issues)
+- Check [GitHub Issues](https://github.com/devsaini889/ai-cold-mail-generator/issues)
 - Search for similar issues
 - Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
@@ -437,7 +437,7 @@ Any other information relevant to the bug
 
 ### Before Suggesting
 
-- Check [GitHub Issues](https://github.com/yourusername/ai-cold-mail-generator/issues)
+- Check [GitHub Issues](https://github.com/devsaini889/ai-cold-mail-generator/issues)
 - Make sure feature doesn't already exist
 
 ### Creating a Feature Request
@@ -474,7 +474,7 @@ Any other relevant information
 
 ## Questions?
 
-- Open a [GitHub Discussion](https://github.com/yourusername/ai-cold-mail-generator/discussions)
+- Open a [GitHub Discussion](https://github.com/devsaini889/ai-cold-mail-generator/discussions)
 - Email: your-email@example.com
 - Check [Troubleshooting Guide](TROUBLESHOOTING.md)
 

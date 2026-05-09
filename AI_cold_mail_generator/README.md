@@ -80,14 +80,14 @@ A web application that generates personalized cold emails using AI (Groq Llama m
 - **Node.js** v14+ - [Download](https://nodejs.org)
 - **npm** or **yarn**
 - **MongoDB Atlas** account - [Create free cluster](https://www.mongodb.com/cloud/atlas)
-- **Gmail account** with app password
+- **Resend account** - [Sign up free](https://resend.com)
 - **Groq API key** - [Get free key](https://console.groq.com)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/ai-cold-mail-generator.git
+   git clone https://github.com/devsaini889/ai-cold-mail-generator.git
    cd ai-cold-mail-generator
    ```
 
@@ -153,8 +153,8 @@ A web application that generates personalized cold emails using AI (Groq Llama m
 | `MONGODB_URI` | MongoDB Atlas connection string | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
 | `JWT_SECRET` | Secret key for JWT tokens | Random 32-character string |
 | `GROQ_API_KEY` | Groq API key for AI email generation | Get from [Groq Console](https://console.groq.com) |
-| `EMAIL_USERNAME` | Gmail address for sending OTPs | `your-email@gmail.com` |
-| `EMAIL_PASSWORD` | Gmail app password (not regular password) | 16-character app password |
+| `RESEND_API_KEY` | Resend API key for sending OTP emails | Get from [Resend Console](https://resend.com/api-keys) |
+| `EMAIL_FROM` | Sender email address (verified in Resend) | `noreply@yourdomain.com` |
 | `PORT` | Server port | `3000` |
 | `NODE_ENV` | Environment mode | `development` or `production` |
 | `CLIENT_URL` | Frontend URL for CORS | `http://localhost:5173` |
@@ -182,7 +182,7 @@ A web application that generates personalized cold emails using AI (Groq Llama m
 - **MongoDB** + **Mongoose** 9.6.1 - Database
 - **JWT** 9.0.3 - Authentication
 - **Bcrypt** 6.0.0 - Password hashing
-- **Nodemailer** 8.0.7 - Email service
+- **Resend** 6.12.3 - Email service for OTP
 - **Groq API** - AI email generation
 
 ## 📖 API Documentation
@@ -276,18 +276,18 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 ## 🐛 Issues & Support
 
-Found a bug? Have a suggestion? [Open an issue](https://github.com/yourusername/ai-cold-mail-generator/issues)
+Found a bug? Have a suggestion? [Open an issue](https://github.com/devsaini889/ai-cold-mail-generator/issues)
 
 For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 ## 👨‍💻 Author
 
-Created with ❤️ by Your Name
+Created with ❤️ by Saini
 
 ## 📞 Contact
 
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: ds0752607@gmail.com
+- GitHub: [@devsaini889](https://github.com/devsaini889)
 
 ---
 
@@ -350,7 +350,7 @@ Created with ❤️ by Your Name
 - ✅ Secure password hashing with bcrypt
 - ✅ JWT authentication tokens (24-hour expiry)
 - ✅ MongoDB integration for user storage
-- ✅ Email service integration with nodemailer
+- ✅ Email service integration with Resend API
 - ✅ AI-powered email generation using Groq LLM
 - ✅ CORS protection for API endpoints
 - ✅ Input validation and sanitization
@@ -391,7 +391,7 @@ Created with ❤️ by Your Name
 - **MongoDB & Mongoose** - Database and ODM
 - **JWT** - JSON Web Token authentication
 - **bcrypt** - Password hashing
-- **nodemailer** - Email service for OTP delivery
+- **Resend** 6.12.3 - Email service for OTP delivery
 - **axios** - HTTP client for API calls
 - **Groq API** - LLM for email generation (Llama model)
 - **dotenv** - Environment variable management
@@ -412,10 +412,10 @@ Created with ❤️ by Your Name
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `MONGO_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
 | `JWT_SECRET` | Secret key for JWT tokens | `your_super_secret_key_12345` |
-| `EMAIL_USERNAME` | Gmail address for OTP | `your-email@gmail.com` |
-| `EMAIL_PASSWORD` | Gmail app password | `xxxx xxxx xxxx xxxx` |
+| `RESEND_API_KEY` | Resend API key for OTP | `re_your_api_key_here` |
+| `EMAIL_FROM` | Sender email address | `noreply@yourdomain.com` |
 | `GROQ_API_KEY` | Groq API key for Llama model | `your_groq_api_key_here` |
 | `PORT` | Server port | `3000` |
 | `NODE_ENV` | Environment mode | `development` or `production` |
@@ -436,10 +436,10 @@ Created with ❤️ by Your Name
 - Check that OTP in request matches the one received
 
 ### Email Not Sending
-- Verify Gmail app password is correct
-- Ensure 2-Step Verification is enabled on Gmail account
-- Check `EMAIL_USERNAME` is set correctly
-- Verify internet connection and SMTP accessibility
+- Verify Resend API key is correct and active
+- Ensure EMAIL_FROM is set to a verified sender address
+- Check `RESEND_API_KEY` is set correctly in server/.env
+- Verify internet connection is active
 
 ### Database Connection Error
 - Check `MONGODB_URI` is correct
@@ -452,7 +452,7 @@ ISC
 
 ## 👤 Author
 
-[Your Name/Organization]
+[Saini - devsaini889](https://github.com/devsaini889)
 
 ## 🤝 Contributing
 

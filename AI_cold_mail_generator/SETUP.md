@@ -36,7 +36,7 @@ git --version       # Should show a version
 ### Create Required Accounts
 
 1. **MongoDB Atlas** - [Create Free Cluster](https://www.mongodb.com/cloud/atlas)
-2. **Gmail Account** - [Sign up](https://accounts.google.com/SignUp)
+2. **Resend Account** - [Sign up free](https://resend.com)
 3. **Groq API** - [Get Free API Key](https://console.groq.com)
 
 ## Quick Start
@@ -45,7 +45,7 @@ For experienced developers, here's the quick setup:
 
 ```bash
 # Clone and navigate
-git clone https://github.com/yourusername/ai-cold-mail-generator.git
+git clone https://github.com/devsaini889/ai-cold-mail-generator.git
 cd ai-cold-mail-generator
 
 # Install all dependencies at once
@@ -65,7 +65,7 @@ npm run dev
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ai-cold-mail-generator.git
+git clone https://github.com/devsaini889/ai-cold-mail-generator.git
 cd ai-cold-mail-generator
 ```
 
@@ -120,9 +120,9 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai_cold_mail_db
 # JWT Secret (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
 JWT_SECRET=your_random_32_character_string_here
 
-# Gmail Configuration (for OTP emails)
-EMAIL_USERNAME=your-email@gmail.com
-EMAIL_PASSWORD=your_16_character_app_password
+# Resend API Configuration (for OTP emails)
+RESEND_API_KEY=your_resend_api_key_here
+EMAIL_FROM=noreply@yourdomain.com
 
 # Groq API (for AI email generation)
 GROQ_API_KEY=your_groq_api_key_here
@@ -157,8 +157,8 @@ VITE_NODE_ENV=development
 |----------|---------|--------|---------|
 | `MONGODB_URI` | Database connection | MongoDB Atlas URI | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
 | `JWT_SECRET` | Token signing key | Random 32+ characters | Use `crypto.randomBytes(32).toString('hex')` |
-| `EMAIL_USERNAME` | Sender email | Gmail address | `your-email@gmail.com` |
-| `EMAIL_PASSWORD` | Gmail app password | 16-char app password | From Gmail app passwords |
+| `RESEND_API_KEY` | Resend API key | API key string | From Resend console |
+| `EMAIL_FROM` | Sender email address | Email address | `noreply@yourdomain.com` |
 | `GROQ_API_KEY` | Groq API key | API key string | From Groq console |
 | `PORT` | Server port | Number | `3000` |
 | `NODE_ENV` | Environment | `development` or `production` | `development` |
@@ -216,22 +216,35 @@ mongodb+srv://myuser:mypassword@cluster0.mongodb.net/ai_cold_mail_db
 
 ## API Keys Setup
 
-### Gmail App Password Setup
+### Resend Email Service Setup
 
-1. **Enable 2-Step Verification**
-   - Go to [Google Account](https://myaccount.google.com/)
-   - Click "Security" in left menu
-   - Find "2-Step Verification"
-   - Click "Get Started"
-   - Follow the steps to enable it
+Resend is used to send OTP emails. It's simpler than Gmail and provides a reliable email service.
 
-2. **Generate App Password**
-   - Go back to [Google Account Security](https://myaccount.google.com/security)
-   - Find "App passwords"
-   - Select "Mail" and "Windows Computer"
-   - Click "Generate"
-   - Copy the 16-character password
-   - Add to `server/.env` as `EMAIL_PASSWORD`
+1. **Create Resend Account**
+   - Visit [Resend Console](https://resend.com)
+   - Sign up with email
+   - Verify your email address
+
+2. **Get API Key**
+   - Go to "API Keys" section in the dashboard
+   - Click "Create API Key"
+   - Name it something like "Development"
+   - Copy the generated API key
+   - Add to `server/.env` as `RESEND_API_KEY`
+
+3. **Set Sender Email**
+   - In Resend dashboard, go to "Domains"
+   - Add your domain or use the provided domain
+   - Add the sender email to `server/.env` as `EMAIL_FROM`:
+   ```
+   EMAIL_FROM=noreply@yourdomain.com
+   ```
+
+4. **Test the Setup**
+   - Run the app: `npm run dev`
+   - Register a new account
+   - Check if you receive the OTP email
+   - If not, check backend logs for errors
 
 ### Groq API Key Setup
 
@@ -371,15 +384,16 @@ MongooseError: connect ECONNREFUSED
 
 **Symptoms:**
 ```
-Error: Invalid login: 535-5.7.8 Username and Password not accepted
+Error: Resend API Error: Unauthorized
+Error: Email service failed
 ```
 
 **Solutions:**
-1. Verify Gmail 2-Step Verification is enabled
-2. Use App Password (NOT regular Gmail password)
-3. Confirm `EMAIL_USERNAME` and `EMAIL_PASSWORD` are correct
-4. Regenerate App Password if necessary
-5. Check Gmail account is not locked
+1. Verify `RESEND_API_KEY` is correct in `server/.env`
+2. Check that `EMAIL_FROM` is set to a verified sender address
+3. Go to [Resend Console](https://resend.com) and verify your API key is active
+4. Regenerate API key if necessary
+5. Restart backend after changing environment variables
 
 ### CORS Error
 
@@ -536,7 +550,7 @@ npm run lint         # Run ESLint
 ## Need Help?
 
 - Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues
-- Review [GitHub Issues](https://github.com/yourusername/ai-cold-mail-generator/issues)
+- Review [GitHub Issues](https://github.com/devsaini889/ai-cold-mail-generator/issues)
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 - Contact: [your-email@example.com](mailto:your-email@example.com)
 │   ├── server.js          # Entry point

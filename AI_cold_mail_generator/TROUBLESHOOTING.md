@@ -282,69 +282,64 @@ Invalid token
 
 **Error Messages:**
 ```
-Invalid login: 535-5.7.8 Username and Password not accepted
-SMTP Error: authenticate failed
-Error: Mail command failed
+Resend API Error: Unauthorized
+Invalid API key
+Error: Email could not be sent
 ```
 
 **Causes & Solutions:**
 
-1. **Gmail App Password Issue**
+1. **Wrong or Missing Resend API Key**
    
-   **Check if 2-Step Verification is Enabled:**
-   ```
-   1. Go to myaccount.google.com
-   2. Click "Security"
-   3. Find "2-Step Verification"
-   4. Should be "ON" (green)
-   5. If OFF, click to enable
-   ```
-
-   **Generate New App Password:**
-   ```
-   1. Go to myaccount.google.com/apppasswords
-   2. Select "Mail" dropdown
-   3. Select "Windows Computer" dropdown
-   4. Click "Generate"
-   5. Copy the 16-character password
-   6. Update server/.env: EMAIL_PASSWORD=xxxx xxxx xxxx xxxx
-   7. Restart backend server
+   **Verify API Key is Correct:**
+   ```bash
+   # Check server/.env
+   RESEND_API_KEY=your_actual_resend_key
+   
+   # Verify the key:
+   # 1. Go to resend.com/api-keys
+   # 2. Check if your API key is visible
+   # 3. Copy the exact key
+   # 4. Update server/.env
+   # 5. Restart backend
    ```
 
-2. **Wrong Email/Password in .env**
+2. **Email Sender Not Verified**
    ```env
-   # Example - use YOUR Gmail
-   EMAIL_USERNAME=your-email@gmail.com
-   EMAIL_PASSWORD=your_16_char_app_password (NOT your Gmail password)
+   # Check that EMAIL_FROM is set correctly
+   EMAIL_FROM=noreply@yourdomain.com
    ```
-   - Verify both values are correct
-   - App password is 16 characters with spaces
-   - Restart backend after changes
+   - Go to [Resend Console](https://resend.com)
+   - Go to "Domains" section
+   - Verify that your domain or sender email is verified
+   - Update `EMAIL_FROM` in `.env` if needed
 
-3. **Gmail Account Locked**
-   - Go to [Gmail Security Check](https://myaccount.google.com/security-checkup)
-   - Complete security check
-   - Try again
+3. **API Key Revoked or Expired**
+   - Go to [Resend Console](https://resend.com/api-keys)
+   - Check if your key is still active
+   - If revoked, create a new API key
+   - Update `server/.env` with new key
+   - Restart backend server
 
 4. **Rate Limiting**
-   - Gmail limits emails sent
+   - Resend has rate limits on free tier
    - Wait a few minutes between attempts
-   - Don't register multiple accounts rapidly
+   - Don't send multiple emails simultaneously
 
-5. **Firewall/VPN Issues**
-   - Some networks block SMTP
-   - Try different network
-   - Disable VPN temporarily
+5. **Firewall/Network Issues**
+   - Some corporate networks block API calls
+   - Try different network or VPN
+   - Check if api.resend.com is accessible
 
 **Test Email Service:**
 ```bash
 # Check backend logs for email errors
-# Should see in terminal: "OTP sent successfully"
+# Should see in terminal: email response from Resend
 
 # If not working, verify:
-# 1. server/.env has EMAIL_USERNAME
-# 2. server/.env has valid EMAIL_PASSWORD
-# 3. Gmail 2FA is enabled
+# 1. server/.env has RESEND_API_KEY
+# 2. RESEND_API_KEY is valid (from resend.com/api-keys)
+# 3. EMAIL_FROM is set to verified sender
 # 4. Backend is restarted after changes
 ```
 
@@ -594,7 +589,7 @@ npm --version     # Should be v6+
    - [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing
 
 4. **Get Help**
-   - [GitHub Issues](https://github.com/yourusername/ai-cold-mail-generator/issues)
+   - [GitHub Issues](https://github.com/devsaini889/ai-cold-mail-generator/issues)
    - Email: [your-email@example.com](mailto:your-email@example.com)
    - Include:
      - Error message

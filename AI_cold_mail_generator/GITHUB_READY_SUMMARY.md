@@ -63,11 +63,11 @@ Complete checklist of all changes made to prepare the project for GitHub publica
   - Database Configuration
   - Authentication
   - AI Configuration
-  - Email Configuration
+  - Email Configuration (Resend API)
   - Server Configuration
 - Clear instructions for each variable
 - Example values with explanations
-- Links to documentation (MongoDB, Groq Console, Gmail)
+- Links to documentation (MongoDB, Groq Console, Resend)
 
 #### Client `.env.example` ✅ UPDATED
 - Organized sections:
@@ -107,7 +107,7 @@ Complete checklist of all changes made to prepare the project for GitHub publica
 - Detailed 5-step setup process
 - Complete environment variables explanation table
 - Step-by-step MongoDB Atlas setup (8 steps)
-- Gmail app password generation guide
+- Resend email service setup guide
 - Groq API key setup guide
 - Three options for running the app
 - Complete project structure diagram
@@ -185,10 +185,10 @@ Includes:
   - User verification issues
   - Token expiration handling
 - Email Issues
-  - Gmail app password setup (detailed steps)
-  - 2-step verification requirements
+  - Resend API setup and verification
+  - API key configuration
+  - Sender email verification
   - Rate limiting information
-  - Firewall/VPN considerations
 - API Issues
   - Prompt validation errors
   - Groq API errors with 4 solutions
@@ -305,7 +305,7 @@ This file - comprehensive summary of all changes
 - ✅ Troubleshooting guide with solutions
 - ✅ Multiple setup options (npm setup, manual, individual)
 - ✅ Code examples throughout
-- ✅ Links to external resources (MongoDB, Groq, Gmail)
+- ✅ Links to external resources (MongoDB, Groq, Resend)
 - ✅ Contributing guidelines welcoming
 - ✅ Multiple contact methods
 
@@ -331,7 +331,7 @@ This file - comprehensive summary of all changes
    git add .
    git commit -m "docs: prepare project for GitHub publication"
    git branch -M main
-   git remote add origin https://github.com/yourusername/ai-cold-mail-generator.git
+   git remote add origin https://github.com/devsaini889/ai-cold-mail-generator.git
    git push -u origin main
    ```
 

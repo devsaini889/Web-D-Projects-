@@ -45,8 +45,9 @@ git ls-files | grep ".env"  # Should return nothing
 - [ ] `JWT_SECRET` changed from development value
 - [ ] `GROQ_API_KEY` is valid and has correct permissions
 - [ ] `GROQ_API_KEY` not exposed in logs or errors
-- [ ] `EMAIL_PASSWORD` is valid Gmail app password (not regular password)
-- [ ] `EMAIL_USERNAME` is correct Gmail address
+- [ ] `RESEND_API_KEY` is valid and active
+- [ ] `RESEND_API_KEY` not exposed in logs or errors
+- [ ] `EMAIL_FROM` is set to verified sender address
 - [ ] All API keys rotated from development
 - [ ] No hardcoded passwords or tokens in code
 - [ ] No secrets in comments or documentation
@@ -622,7 +623,7 @@ _______________________________________________
 - [ ] Monitoring/logging setup
 - [ ] CI/CD pipeline configured
 - [ ] Domain/SSL certificate ready
-- [ ] Email service production keys ready
+- [ ] Resend API key configured and verified
 - [ ] Groq API key for production
 
 ## Post-Deployment
