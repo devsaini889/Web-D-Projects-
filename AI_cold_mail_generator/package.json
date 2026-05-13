@@ -31,8 +31,8 @@
   ],
   "author": "Saini <ds0752607@gmail.com>",
   "license": "ISC",
-  "engines": {
-    "node": ">=14.0.0",
+   "engines": {
+    "node": ">=20.0.0 <25.0.0",
     "npm": ">=6.0.0"
   },
   "dependencies": {
