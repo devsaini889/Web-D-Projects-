@@ -47,7 +47,7 @@ const Signup = () => {
                 <div className="bg-white py-8 px-6 shadow border border-gray-100 sm:rounded-xl">
                     <form className="space-y-5" onSubmit={handleSubmit}>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                            <label className="block text-sm font-medium text-gray-700">User Name</label>
                             <input
                                 type="text"
                                 required
